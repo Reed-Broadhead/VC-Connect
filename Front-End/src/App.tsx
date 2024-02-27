@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import {Routes, Route } from 'react-router-dom'
 import  CreateMeeting from './components/CreateMeeting'
+import JoinMeeting from './components/JoinMeeting'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -19,6 +20,7 @@ function App() {
     <>
      <Routes>
       <Route path="/" element={<CreateMeeting/>} />
+      <Route path="/meeting" element={<JoinMeeting/>} />
      </Routes>
     </>
   )
