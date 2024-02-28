@@ -2,7 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
-require('dotenv').config();
+const meetings = require('./routes/meetings.js');
 
 const app = express();
 
@@ -19,10 +19,14 @@ app.use(morgan('combined'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Basic route
+// ROUTES
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
+
+app.use(meetings);
+    
+// Joining a meeting someone else created
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -33,5 +37,5 @@ app.use((err, req, res, next) => {
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on: http://localhost:${PORT}`);
 });
