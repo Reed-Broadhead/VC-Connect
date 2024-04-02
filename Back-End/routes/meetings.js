@@ -19,7 +19,6 @@ function encodeBase64() {
 }
 
 async function joinMeeting(meetingId, encodedString = encodeBase64()) {
-  console.log(meetingId);
   try {
     const optionsParticipant = {
       method: 'POST',
@@ -30,7 +29,7 @@ async function joinMeeting(meetingId, encodedString = encodeBase64()) {
           Authorization: encodedString
       },
       data: {
-          name: 'Mary Sue',
+          name: 'John Doe',
           picture: 'https://i.imgur.com/test.jpg',
           preset_name: 'group_call_participant',
           custom_participant_id: '497f6eca-6276-4993-bfeb-53cbbbba6f08'
@@ -105,5 +104,14 @@ router.post('/meetings', async (req, res) => {
       console.error(error);
     }
 }) 
-
+router.post("/join-meeting", async (req, res) => {
+console.log(req.body)
+	try {
+		const {meetingId} = req.body
+		const data = await joinMeeting(meetingId)
+		res.status(200).send(data.data.token)
+	} catch (error) {
+		res.status(500, error)
+	}
+})
 module.exports = router;
