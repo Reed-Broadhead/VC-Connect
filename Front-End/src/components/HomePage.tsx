@@ -6,17 +6,17 @@ import {useNavigate} from 'react-router-dom';
 export default function HomePage() {
 	const navigate = useNavigate();
 
-	function handleSubmit(e) {
+	function handleSubmit(e	:any) {
 		e.preventDefault();
 		console.log(e.target[0].value);
 		try{
 			axios.post('http://localhost:3000/join-meeting', {
 				meetingId: e.target[0].value
 			}).then((res) => {
-        			navigate(`/meeting/?authToken=${res.data}`);
+        		navigate(`/meeting/?authToken=${res.data}`);
 			})
 		} catch (error) {
-			console.error(error)
+			console.log(error, "error")
 		}
 		e.target.reset();
 	}
