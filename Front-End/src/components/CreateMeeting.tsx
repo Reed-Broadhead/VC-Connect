@@ -8,6 +8,7 @@ export default function CreateMeeting() {
     // makes request to backend to get authToken
     axios.post('http://localhost:3000/meetings')
     .then((res) => {
+        console.log(res.data);
         // reroutes to JoinMeeting page with the response as the authToken perameter
         let authToken = res.data;
         navigate(`/meeting/?authToken=${authToken}`);

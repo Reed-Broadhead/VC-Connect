@@ -2,8 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
-const meetings = require('./routes/meetings.js');
-
+const meetingRouter = require('./routes/meetings.js');
 const app = express();
 
 // Basic security protections
@@ -24,8 +23,8 @@ app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
 
-app.use(meetings);
-    
+//app.use(joinMeeting);
+app.use("/", meetingRouter);
 // Joining a meeting someone else created
 
 // Error handling middleware

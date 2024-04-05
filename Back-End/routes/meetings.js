@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios').default;
+const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
 // Function to base64 encode the environment variables
@@ -19,7 +20,6 @@ function encodeBase64() {
 }
 
 async function joinMeeting(meetingId, encodedString = encodeBase64()) {
-  console.log(meetingId);
   try {
     const optionsParticipant = {
       method: 'POST',
@@ -30,16 +30,17 @@ async function joinMeeting(meetingId, encodedString = encodeBase64()) {
           Authorization: encodedString
       },
       data: {
-          name: 'Mary Sue',
+          name: 'John Doe',
           picture: 'https://i.imgur.com/test.jpg',
           preset_name: 'group_call_participant',
-          custom_participant_id: '497f6eca-6276-4993-bfeb-53cbbbba6f08'
+          custom_participant_id: uuidv4(),
       }
     };
     const {data} = await axios.request(optionsParticipant);
     return(data)
   } catch (error) {
-    console.error(error.message, '[OH, NO!]')
+    console.error(error, '[OH, NO!]')
+    return(error)
   }
 }
 
@@ -51,6 +52,7 @@ async function joinMeeting(meetingId, encodedString = encodeBase64()) {
 // Front-End to our Back-End
 router.post('/meetings', async (req, res) => {
   // Back-End to Dyte
+  const {title = "The Great Meeting"} = req.body;
   const encodedString = encodeBase64();
   const optionsMeeting = {
     method: 'POST',
@@ -61,7 +63,7 @@ router.post('/meetings', async (req, res) => {
       Authorization: encodedString
     },
     data: {
-      title: 'string',
+      title,
       preferred_region: 'ap-south-1',
       record_on_start: false,
       live_stream_on_start: false,
@@ -105,5 +107,15 @@ router.post('/meetings', async (req, res) => {
       console.error(error);
     }
 }) 
-
+router.post("/join-meeting", async (req, res) => {
+console.log(req.body)
+	try {
+		const {meetingId} = req.body
+		const data = await joinMeeting(meetingId)
+		res.status(200).send(data.data.token)
+	} catch (error) {
+		//console.error(error)
+		res.status(500, error)
+	}
+})
 module.exports = router;
