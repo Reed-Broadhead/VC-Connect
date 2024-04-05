@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import axios, { Axios } from "axios"
+// import axios, { Axios } from "axios"
 import { DyteMeeting } from "@dytesdk/react-ui-kit";
 import { useDyteClient, DyteProvider } from "@dytesdk/react-web-core";
 
 export default function JoinMeeting() {
   const [meeting, initMeeting] = useDyteClient();
+  
 
   useEffect(() => {
     const searchParams = new URL(window.location.href).searchParams;
@@ -26,11 +27,14 @@ export default function JoinMeeting() {
   // By default this component will cover the entire viewport.
   // To avoid that and to make it fill a parent container, pass the prop:
   // `mode="fill"` to the component.
+
+
   return (
     <DyteProvider value={meeting}>
+      
       <button
-        style={{ position: "absolute", zIndex: 100 }}
-        onClick={() => console.log(meeting.meta.meetingId)}
+        style={{ backgroundColor: "eggshell", color: "black", position: "absolute", zIndex: 100, left: 10, top: 10}}
+        onClick={() => {navigator.clipboard.writeText(meeting?.meta.meetingId ?? "")}}
       >
         Copy Meeting ID
       </button>
@@ -38,3 +42,4 @@ export default function JoinMeeting() {
     </DyteProvider>
   );
 }
+//onClick={() => {navigator.clipboard.writeText(this.state.textToCopy)}}
